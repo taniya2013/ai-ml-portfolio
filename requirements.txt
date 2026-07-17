@@ -7,3 +7,4 @@ requests
 bs4
 numpy
 pandas
+yt-dlp
