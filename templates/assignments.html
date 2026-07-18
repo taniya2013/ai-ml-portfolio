@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments & Practice Sheets</title>
+    <style>
+        :root {
+            --neon-pink: #ec4899;
+            --bg-color: #030008;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body { 
+            min-height: 100vh; 
+            background: var(--bg-color); 
+            color: white;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+            transition: background 0.2s ease;
+        }
+
+        #starCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        #main-container {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.1s ease-out;
+        }
+
+        nav {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(236, 72, 153, 0.3);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo { font-size: 24px; font-weight: bold; color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
+        
+        .nav-links { display: flex; gap: 15px; }
+
+        .nav-btn { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+            border: 1px solid var(--neon-pink);
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover { 
+            background: var(--neon-pink);
+            color: white;
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        .content-wrapper {
+            width: 80%;
+            margin: 60px auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #ff7eb3, 0 0 20px #ff7eb3, 0 0 40px var(--neon-pink);
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 18px;
+            margin-bottom: 50px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .file-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .file-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+        }
+
+        .file-card h3 { font-size: 20px; margin-bottom: 10px; }
+
+        .file-card a {
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--neon-pink);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .file-card a:hover {
+            background: var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        @media(max-width:768px){
+            nav { flex-direction: column; gap: 15px; }
+            h1 { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="starCanvas"></canvas>
+
+    <div id="main-container">
+        <nav>
+            <div class="nav-logo">My Assignments</div>
+            <div class="nav-links">
+                <a href="/" class="nav-btn" onclick="playBeep()">Home</a>
+                <a href="about.html" class="nav-btn" onclick="playBeep()">About Me</a>
+                
+                <button onclick="playBeep(); location.reload()" class="nav-btn">Refresh</button>
+            </div>
+        </nav>
+
+        <div class="content-wrapper">
+            <h1>Assignments & Practice Sheets</h1>
+            <p class="subtitle">Stay updated with daily practice sheets and learning resources.</p>
+
+            <div class="cards-grid">
+                <div class="file-card">
+                    <h3>Day 1 Practice Sheet</h3>
+                    <a href="{{ url_for('static', filename='pdf/day_1_practice_sheet.pdf') }}" target="_blank" onclick="playBeep()">View PDF</a>
+                </div>
+
+                <div class="file-card">
+                    <h3>Day 2 Practice Sheet</h3>
+                    <a href="{{ url_for('static', filename='pdf/day2_practice_sheet.pdf') }}" target="_blank" onclick="playBeep()">View PDF</a>
+                </div>
+
+                <div class="file-card">
+                    <h3>Day 3 Practice Sheet</h3>
+                    <a href="{{ url_for('static', filename='pdf/day_3_practice_sheet.pdf') }}" target="_blank" onclick="playBeep()">View PDF</a>
+                </div>
+
+                <div class="file-card">
+                    <h3>BLOG on Microsoft Copilot</h3>
+                    <a href="{{ url_for('static', filename='pdf/BLOG.pdf') }}" target="_blank" onclick="playBeep()">View PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('main-container');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        function createStars() {
+            stars = [];
+            for(let i=0; i<150; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5 + 0.2
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            stars.forEach(star => {
+                star.y -= star.speed;
+                if(star.y < 0) star.y = canvas.height;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            container.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        createStars();
+        animate();
+    </script>
+</body>
+</html>

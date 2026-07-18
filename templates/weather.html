@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App | Galaxy Theme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { 
+            margin: 0; 
+            background-color: #030008; 
+            color: white; 
+            font-family: 'Poppins', 'Segoe UI', sans-serif; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+        }
+        
+        canvas { 
+            display: block; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            z-index: -1; 
+        }
+        
+        /* Typography & Effects */
+        .pink-gradient-text { 
+            background: linear-gradient(90deg, #ff7eb3 0%, #ff1493 50%, #ff758c 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        /* Navbar */
+        .nav-container { 
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 15px; 
+            padding: 20px; 
+            z-index: 20; 
+            position: sticky; 
+            top: 0; 
+            background: rgba(3, 0, 8, 0.5); 
+            backdrop-filter: blur(10px); 
+        }
+        
+        /* Buttons & Inputs */
+        .glow-button { 
+            background: rgba(255, 20, 147, 0.05); 
+            border: 2px solid #ff7eb3; 
+            color: #ff7eb3; 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+            padding: 12px 24px; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .glow-button:hover { 
+            background: #ff7eb3; 
+            color: #fff; 
+            box-shadow: 0 0 15px #ff7eb3; 
+            transform: translateY(-2px); 
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .glow-input {
+            padding: 12px 20px;
+            width: 320px;
+            max-width: 90%;
+            background: rgba(30, 41, 59, 0.6);
+            border: 2px solid rgba(255, 126, 179, 0.4);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .glow-input:focus {
+            border-color: #ff7eb3;
+            box-shadow: 0 0 15px rgba(255, 126, 179, 0.3);
+        }
+        
+        /* Vertical Table Styles (Card Look) */
+        .table-container { 
+            padding: 0 5% 50px 5%; 
+            max-width: 700px; /* Thoda chota rakha hai taaki card jaisa lage */
+            margin: auto;
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: rgba(20, 5, 25, 0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 126, 179, 0.3); 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        th, td { 
+            padding: 18px 24px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+
+        /* Thoda distinct look diya hai table headers aur data ko */
+        th { 
+            background: rgba(255, 20, 147, 0.15); 
+            color: #ff7eb3; 
+            font-size: 16px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            text-align: left;
+            width: 40%;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        td {
+            color: #f8fafc;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: right; /* Values right align achi lagengi */
+        }
+        
+        tr:hover td, tr:hover th { 
+            background: rgba(255, 20, 147, 0.1); 
+        }
+
+        tr:last-child th, tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Weather Icon styling in table */
+        .weather-value {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Canvas -->
+    <canvas id="galaxyCanvas"></canvas>
+
+    <!-- Top Navigation -->
+    <nav class="nav-container">
+        <button class="glow-button" onclick="window.location.href='/'">Home</button>
+    </nav>
+
+    <main>
+        <h1 class="text-4xl md:text-5xl font-extrabold mt-8 text-center pink-gradient-text tracking-wide">
+            🌦 Weather App
+        </h1>
+        
+        <!-- Search Form -->
+        <form method="POST" class="search-container">
+            <input type="text" name="city" class="glow-input" placeholder="Enter City (e.g. London)" required>
+            <button type="submit" class="glow-button">Search</button>
+        </form>
+
+        <!-- Weather Results Table (Controlled by Jinja2) -->
+        <div class="table-container">
+            {% if weather %}
+            <table>
+                <tbody>
+                    <tr>
+                        <th>City</th>
+                        <td>{{ weather.City }}</td>
+                    </tr>
+                    <tr>
+                        <th>Country</th>
+                        <td>{{ weather.Country }}</td>
+                    </tr>
+                    <tr>
+                        <th>Temperature</th>
+                        <td class="text-pink-300 font-bold text-xl">{{ weather.Temperature }}</td>
+                    </tr>
+                    <tr>
+                        <th>Feels Like</th>
+                        <td>{{ weather["Feels Like"] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Humidity</th>
+                        <td>{{ weather.Humidity }}</td>
+                    </tr>
+                    <tr>
+                        <th>Weather</th>
+                        <td class="text-pink-200 capitalize">{{ weather.Weather }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td class="capitalize">{{ weather.Description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Wind Speed</th>
+                        <td>{{ weather["Wind Speed"] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        // --- Galaxy Canvas Animation ---
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+        
+        function resize() { 
+            width = canvas.width = window.innerWidth; 
+            height = canvas.height = window.innerHeight; 
+            stars = Array.from({length: 400}, () => ({
+                x: Math.random() * width, 
+                y: Math.random() * height, 
+                size: Math.random() * 1.5, 
+                speed: Math.random() * 0.5
+            })); 
+        }
+        
+        function animate() { 
+            // Deep dark background
+            ctx.fillStyle = '#030008'; 
+            ctx.fillRect(0, 0, width, height); 
+            
+            // Star color
+            ctx.fillStyle = 'white'; 
+            
+            stars.forEach(s => { 
+                s.y += s.speed; 
+                // Reset star to top when it falls off screen
+                if (s.y > height) s.y = 0; 
+                
+                ctx.beginPath(); 
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); 
+                ctx.fill(); 
+            }); 
+            
+            requestAnimationFrame(animate); 
+        }
+        
+        // Handle window resize
+        window.onresize = resize; 
+        
+        // Start animation on load
+        window.onload = function() {
+            resize(); 
+            animate();
+        };
+    </script>
+</body>
+</html>

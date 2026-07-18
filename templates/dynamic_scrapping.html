@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Web Scraping | Taniya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; background-color: #030008; color: white; font-family: 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; }
+        .pink-gradient-text { background: linear-gradient(90deg, #ff7eb3 0%, #ff1493 50%, #ff758c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-container { display: flex; justify-content: flex-end; gap: 15px; padding: 20px; z-index: 20; position: sticky; top: 0; background: rgba(3, 0, 8, 0.5); backdrop-filter: blur(10px); }
+        .glow-button { background: rgba(255, 20, 147, 0.05); border: 2px solid #ff7eb3; color: #ff7eb3; transition: all 0.3s ease; cursor: pointer; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-transform: uppercase; }
+        .glow-button:hover { background: #ff7eb3; color: #fff; box-shadow: 0 0 15px #ff7eb3; transform: translateY(-2px); }
+        .glass-panel { background: rgba(20, 5, 25, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 126, 179, 0.2); transition: all 0.4s ease; padding: 2rem; border-radius: 1.5rem; }
+        .glass-panel:hover { border-color: #ff7eb3; box-shadow: 0 0 20px rgba(255, 20, 147, 0.3); transform: translateY(-5px); }
+        .github-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid #ffffff; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; transition: all 0.3s; }
+        .github-btn:hover { background: white; color: black; }
+    </style>
+</head>
+<body>
+    <canvas id="galaxyCanvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <button class="glow-button" onclick="navWithSound('/')">Home</button>
+        <button class="glow-button" onclick="navWithSound('/about')">About Me</button>
+        <button class="glow-button" onclick="navWithSound('/blog')">Blogs</button>
+        <button class="glow-button" onclick="navWithSound('/internship')">Experience</button>
+    </nav>
+
+    <main class="p-6 max-w-6xl mx-auto space-y-12">
+        <section class="text-center py-10">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 pink-gradient-text">Dynamic Web Scraping</h1>
+            <p class="text-gray-400 text-lg">Harnessing Selenium for advanced automation and JavaScript-heavy websites.</p>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Flipkart -->
+            <div class="glass-panel space-y-4">
+                <h2 class="text-2xl font-bold">🛒 Flipkart Scraper</h2>
+                <p class="text-gray-300 text-sm">Extract laptop names, prices, and imagery using Selenium automation.</p>
+                <div class="flex gap-2 pt-4">
+                    <button onclick="navWithSound('/flipkart')" class="glow-button flex-1">View Project</button>
+                    <a href="https://github.com/taniya2013/dynamic-scrapping/blob/main/flipkart_scrapping.pdf" target="_blank" onclick="playBeep()" class="github-btn">GitHub</a>
+                </div>
+            </div>
+
+            <!-- Quotes -->
+            <div class="glass-panel space-y-4">
+                <h2 class="text-2xl font-bold">💬 Quotes Scraper</h2>
+                <p class="text-gray-300 text-sm">Advanced quote extraction patterns built with dynamic DOM interactions.</p>
+                <div class="flex gap-2 pt-4">
+                    <button onclick="navWithSound('/quotes')" class="glow-button flex-1">View Project</button>
+                    <a href="https://github.com/taniya2013/dynamic-scrapping/blob/main/quotes-scrapping.pdf" target="_blank" onclick="playBeep()" class="github-btn">GitHub</a>
+                </div>
+            </div>
+
+            <!-- YouTube -->
+            <div class="glass-panel space-y-4">
+                <h2 class="text-2xl font-bold">🎥 YouTube Scraper</h2>
+                <p class="text-gray-300 text-sm">Efficiently scraping trending video metadata and statistics.</p>
+                <div class="flex gap-2 pt-4">
+                    <button onclick="navWithSound('/youtube')" class="glow-button flex-1">View Project</button>
+                    <a href="https://github.com/taniya2013/dynamic-scrapping/blob/main/Youtube_trending_videos.pdf" target="_blank" onclick="playBeep()" class="github-btn">GitHub</a>
+                </div>
+            </div>
+
+            <!-- Zomato -->
+            <div class="glass-panel space-y-4">
+                <h2 class="text-2xl font-bold">🍽️ Zomato Scraper</h2>
+                <p class="text-gray-300 text-sm">Extract restaurant details and listings via Selenium.</p>
+                <div class="flex gap-2 pt-4">
+                    <button onclick="navWithSound('/zomato')" class="glow-button flex-1">View Project</button>
+                    <a href="https://github.com/taniya2013/dynamic-scrapping/blob/main/zomato_scrapping.pdf" target="_blank" onclick="playBeep()" class="github-btn">GitHub</a>
+                </div>
+            </div>
+
+            <!-- Hacker News -->
+            <div class="glass-panel space-y-4">
+                <h2 class="text-2xl font-bold">🌐 Live HackerNews</h2>
+                <p class="text-gray-300 text-sm">Real-time data extraction from live dynamic feeds.</p>
+                <div class="flex gap-2 pt-4">
+                    <button onclick="navWithSound('/livehackernews')" class="glow-button flex-1">View Project</button>
+                    <a href="https://github.com/taniya2013/dynamic-scrapping/blob/main/live-hackernews-scrapping.pdf" target="_blank" onclick="playBeep()" class="github-btn">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playBeep() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+        function navWithSound(url) {
+            playBeep();
+            setTimeout(() => { window.location.href = url; }, 200);
+        }
+
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) - 0.5;
+            mouseY = (e.clientY / window.innerHeight) - 0.5;
+        });
+
+        function resize() { 
+            width = canvas.width = window.innerWidth; 
+            height = canvas.height = window.innerHeight; 
+            stars = Array.from({length: 400}, () => ({x: Math.random() * width, y: Math.random() * height, size: Math.random() * 1.5, speed: Math.random() * 0.5})); 
+        }
+        function animate() { 
+            ctx.fillStyle = '#030008'; 
+            ctx.fillRect(0, 0, width, height); 
+            ctx.fillStyle = 'white'; 
+            stars.forEach(s => { 
+                s.y += s.speed + (mouseY * 0.5); 
+                s.x += (mouseX * 0.5);
+                if (s.y > height) s.y = 0; 
+                if (s.x > width) s.x = 0; else if (s.x < 0) s.x = width;
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); 
+            }); 
+            requestAnimationFrame(animate); 
+        }
+        window.onresize = resize; resize(); animate();
+    </script>
+</body>
+</html>

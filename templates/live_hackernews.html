@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Hacker News Scraper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { 
+            margin: 0; 
+            background-color: #030008; 
+            color: white; 
+            font-family: 'Segoe UI', 'Poppins', sans-serif; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+        }
+        
+        canvas { 
+            display: block; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            z-index: -1; 
+        }
+        
+        .pink-gradient-text { 
+            background: linear-gradient(90deg, #ff7eb3 0%, #ff1493 50%, #ff758c 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        .nav-container { 
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 15px; 
+            padding: 20px; 
+            z-index: 20; 
+            position: sticky; 
+            top: 0; 
+            background: rgba(3, 0, 8, 0.5); 
+            backdrop-filter: blur(10px); 
+        }
+        
+        .glow-button { 
+            background: rgba(255, 20, 147, 0.05); 
+            border: 2px solid #ff7eb3; 
+            color: #ff7eb3; 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+        }
+        
+        .glow-button:hover { 
+            background: #ff7eb3; 
+            color: #fff; 
+            box-shadow: 0 0 15px #ff7eb3; 
+            transform: translateY(-2px); 
+        }
+        
+        .table-container { 
+            padding: 50px 8%; 
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: rgba(20, 5, 25, 0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 126, 179, 0.2); 
+            border-radius: 1.5rem; 
+            overflow: hidden; 
+        }
+        
+        th, td { 
+            padding: 20px; 
+            text-align: left; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #e2e8f0; 
+        }
+        
+        th { 
+            background: rgba(255, 20, 147, 0.2); 
+            color: #fff; 
+            font-size: 16px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        
+        tr:hover { 
+            background: rgba(255, 20, 147, 0.1); 
+        }
+        
+        .title { 
+            font-weight: 500; 
+            color: #f8fafc;
+        }
+        
+        .action-btn { 
+            color: #ff7eb3; 
+            text-decoration: none; 
+            font-weight: bold; 
+            padding: 5px 15px; 
+            border: 1px solid #ff7eb3; 
+            border-radius: 5px; 
+            transition: 0.3s; 
+            display: inline-block;
+        }
+        
+        .action-btn:hover { 
+            background: #ff7eb3; 
+            color: white; 
+            box-shadow: 0 0 10px #ff7eb3;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="galaxyCanvas"></canvas>
+
+    <nav class="nav-container">
+        <button class="glow-button" onclick="window.location.href='/'">Home</button>
+        <button class="glow-button" onclick="window.location.reload()">Refresh</button>
+    </nav>
+
+    <main class="table-container">
+        <h1 class="text-5xl font-extrabold mb-10 text-center pink-gradient-text">🔥 Live Hacker News Scraper</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Title</th>
+                    <th>Points</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <!-- 
+                    JINJA2 TEMPLATE INSTRUCTION:
+                    Backend ke liye ye loop use karein:
+
+                    {% for item in news %}
+                    <tr>
+                        <td class="text-pink-400 font-bold w-20">{{ loop.index }}</td>
+                        <td class="title">{{ item.title }}</td>
+                        <td class="text-pink-300 font-semibold">{{ item.points }}</td>
+                        <td>
+                            <a href="{{ item.link }}" target="_blank" class="action-btn">Open</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                -->
+            </tbody>
+        </table>
+    </main>
+
+    <script>
+        // --- 1. Galaxy Canvas Animation ---
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+        
+        function resize() { 
+            width = canvas.width = window.innerWidth; 
+            height = canvas.height = window.innerHeight; 
+            stars = Array.from({length: 400}, () => ({
+                x: Math.random() * width, 
+                y: Math.random() * height, 
+                size: Math.random() * 1.5, 
+                speed: Math.random() * 0.5
+            })); 
+        }
+        
+        function animate() { 
+            ctx.fillStyle = '#030008'; 
+            ctx.fillRect(0, 0, width, height); 
+            ctx.fillStyle = 'white'; 
+            
+            stars.forEach(s => { 
+                s.y += s.speed; 
+                if (s.y > height) s.y = 0; 
+                ctx.beginPath(); 
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); 
+                ctx.fill(); 
+            }); 
+            
+            requestAnimationFrame(animate); 
+        }
+        
+        window.onresize = resize; 
+        
+        // --- 2. Mock Data Rendering (Preview Purpose Only) ---
+        const mockScrapedNews = [
+            { title: "Show HN: I built an open-source web scraper", points: "452", link: "#" },
+            { title: "Web Scraping in Python – The Complete Guide", points: "378", link: "#" },
+            { title: "Ask HN: What are the best tools for web scraping in 2026?", points: "210", link: "#" },
+            { title: "Scraping my own Hacker News comments", points: "185", link: "#" },
+            { title: "Show HN: Tiny CLI tool to scope website protections", points: "142", link: "#" },
+            { title: "How to extract structured data out of HTML efficiently", points: "98", link: "#" },
+            { title: "PostgreSQL 18 Released", points: "856", link: "#" },
+            { title: "Understanding the new CSS Grid features", points: "342", link: "#" },
+            { title: "My journey moving away from Cloud to Bare Metal", points: "512", link: "#" },
+            { title: "Ask HN: Who is hiring? (July 2026)", points: "920", link: "#" },
+            { title: "A deep dive into JavaScript Engine optimization", points: "275", link: "#" },
+            { title: "Why I stopped using Single Page Applications", points: "630", link: "#" },
+            { title: "Show HN: A minimal 2D physics engine in C", points: "198", link: "#" },
+            { title: "The math behind modern cryptography explained simply", points: "410", link: "#" },
+            { title: "Reverse engineering an old Nintendo game", points: "543", link: "#" },
+            { title: "Linux kernel update brings massive performance boost", points: "765", link: "#" },
+            { title: "Show HN: Open-source alternative to Notion", points: "890", link: "#" },
+            { title: "How we scaled our database to handle 10k req/sec", points: "324", link: "#" },
+            { title: "The history of the original Macintosh keyboard", points: "156", link: "#" },
+            { title: "Learning Rust by building a tiny OS", points: "487", link: "#" },
+            { title: "Ask HN: Favorite books for software architecture?", points: "612", link: "#" },
+            { title: "We rebuilt our entire app in WebAssembly", points: "289", link: "#" },
+            { title: "Show HN: Real-time collaborative code editor", points: "376", link: "#" },
+            { title: "Why sleep is the most important metric for developers", points: "405", link: "#" },
+            { title: "A visual guide to understanding distributed systems", points: "521", link: "#" },
+            { title: "Ask HN: What is your favorite obscure programming language?", points: "156", link: "#" },
+            { title: "Show HN: I made a smart mirror using a Raspberry Pi", points: "342", link: "#" },
+            { title: "The hidden costs of serverless computing", points: "489", link: "#" },
+            { title: "Building a search engine from scratch in C++", points: "675", link: "#" },
+            { title: "Why we migrated from React to Vanilla JS", points: "812", link: "#" }
+        ];
+
+        window.onload = function() {
+            // Start Canvas
+            resize(); 
+            animate();
+
+            // Load Data
+            const tbody = document.getElementById('data-table-body');
+            mockScrapedNews.forEach((item, index) => {
+                const rowHTML = `
+                    <tr>
+                        <td class="text-pink-400 font-bold w-20">${index + 1}</td>
+                        <td class="title">${item.title}</td>
+                        <td class="text-pink-300 font-semibold">${item.points}</td>
+                        <td>
+                            <a href="${item.link}" target="_blank" class="action-btn">Open</a>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', rowHTML);
+            });
+        };
+    </script>
+</body>
+</html>

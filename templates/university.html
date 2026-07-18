@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Dashboard | Taniya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --neon-pink: #ec4899; --bg-color: #030008; }
+        body { margin: 0; background-color: var(--bg-color); color: white; font-family: 'Poppins', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        #starCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        #main-container { position: relative; z-index: 1; transition: transform 0.1s ease-out; }
+        nav { padding: 20px 40px; display: flex; justify-content: flex-end; gap: 15px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .nav-btn { color: white; text-decoration: none; font-weight: 500; padding: 10px 20px; border-radius: 8px; transition: 0.3s; border: 1px solid var(--neon-pink); background: transparent; cursor: pointer; }
+        .nav-btn:hover { background: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+        .pink-glow { text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink); color: white; }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 20px; transition: 0.4s; padding: 2rem; }
+        .glass-panel:hover { border-color: var(--neon-pink); box-shadow: 0 0 20px rgba(236, 72, 153, 0.3); }
+    </style>
+</head>
+<body>
+    <canvas id="starCanvas"></canvas>
+    <div id="main-container">
+        <nav>
+            <button class="nav-btn" onclick="navWithSound('/')">Home</button>
+            <button class="nav-btn" onclick="navWithSound('/about')">About Me</button>
+            <button class="nav-btn" onclick="navWithSound('/blog')">Blogs</button>
+            <button class="nav-btn" onclick="navWithSound('/internship')">Experience</button>
+        </nav>
+
+        <main class="p-6 max-w-4xl mx-auto space-y-8">
+            <div class="glass-panel space-y-6">
+                <h1 class="text-4xl font-extrabold pink-glow text-center">🎓 University Dashboard</h1>
+                
+                <img src="{{ url_for('static', filename='images/Screenshot 2026-07-06 223545.png') }}" 
+                     alt="University Dashboard" class="w-full rounded-xl border border-pink-500/30">
+
+                <h3 class="text-xl font-bold text-pink-400">Project Overview</h3>
+                <p class="text-gray-300 leading-relaxed">
+                    This interactive Power BI dashboard provides insights into university student performance, academic results, and departmental analysis. It helps users monitor student records through KPIs, charts, and filters.
+                </p>
+
+                <h3 class="text-xl font-bold text-pink-400">Dashboard Features</h3>
+                <ul class="text-gray-300 list-disc list-inside space-y-2">
+                    <li>📊 Count of Department by Student Name</li>
+                    <li>🎯 Total Pass and Expected Pass by Subject</li>
+                    <li>📈 Count of Student ID by Year</li>
+                    <li>🍩 Count of City by State</li>
+                    <li>📉 Count of Grade by Semester</li>
+                    <li>👨‍🎓 Count of Gender by Year and City</li>
+                    <li>🏫 Count of Student ID by Department</li>
+                </ul>
+
+               <button onclick="navWithSound('/powerbi')" class="nav-btn w-full">
+    ← Back to Dashboards
+</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playBeep() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+        function navWithSound(url) {
+            playBeep();
+            setTimeout(() => window.location.href = url, 200);
+        }
+        // Background Stars Animation
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('main-container');
+        let stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
+        function createStars() {
+            stars = [];
+            for(let i=0; i<150; i++) {
+                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: Math.random() * 0.5 });
+            }
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            stars.forEach(star => {
+                star.y -= star.speed;
+                if(star.y < 0) star.y = canvas.height;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            container.style.transform = `translate(${x}px, ${y}px)`;
+        });
+        createStars();
+        animate();
+    </script>
+</body>
+</html>

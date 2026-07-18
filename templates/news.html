@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Scraper | Galaxy Theme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            margin: 0; 
+            background-color: #030008; 
+            color: white; 
+            font-family: 'Poppins', sans-serif; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+        }
+        
+        canvas { 
+            display: block; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            z-index: -1; 
+        }
+        
+        .pink-gradient-text { 
+            background: linear-gradient(90deg, #ff7eb3 0%, #ff1493 50%, #ff758c 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        .nav-container { 
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 15px; 
+            padding: 20px; 
+            z-index: 20; 
+            position: sticky; 
+            top: 0; 
+            background: rgba(3, 0, 8, 0.5); 
+            backdrop-filter: blur(10px); 
+        }
+        
+        .glow-button { 
+            background: rgba(255, 20, 147, 0.05); 
+            border: 2px solid #ff7eb3; 
+            color: #ff7eb3; 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .glow-button:hover { 
+            background: #ff7eb3; 
+            color: #fff; 
+            box-shadow: 0 0 15px #ff7eb3; 
+            transform: translateY(-2px); 
+        }
+
+        .table-container { 
+            padding: 0 5% 50px 5%; 
+            max-width: 1100px; 
+            margin: auto;
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: rgba(20, 5, 25, 0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 126, 179, 0.3); 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        th, td { 
+            padding: 18px 24px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            text-align: left;
+        }
+
+        th { 
+            background: rgba(255, 20, 147, 0.15); 
+            color: #ff7eb3; 
+            font-size: 16px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+        td {
+            color: #f8fafc;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        tr:hover td { 
+            background: rgba(255, 20, 147, 0.1); 
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        @media(max-width:768px){
+            .table-container { padding: 0 15px 30px 15px; }
+            th, td { padding: 12px 15px; }
+            .glow-button { padding: 8px 15px; font-size: 12px; }
+            h1 { font-size: 2rem !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Canvas -->
+    <canvas id="galaxyCanvas"></canvas>
+
+    <!-- Top Navigation -->
+    <nav class="nav-container">
+        <button class="glow-button" onclick="window.location.href='/'">Home</button>
+        <button class="glow-button" onclick="window.location.reload()">Refresh</button>
+    </nav>
+
+    <main>
+        <h1 class="text-4xl md:text-5xl font-extrabold mt-4 mb-10 text-center pink-gradient-text tracking-wide">
+            📰 Latest News
+        </h1>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 75%;">Headline</th>
+                        <th style="text-align: center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in data %}
+                    <tr>
+                        <td class="font-medium text-gray-200">{{ i.headline }}</td>
+                        <td style="text-align: center;">
+                            <a href="{{ i.url }}" target="_blank" class="glow-button">
+                                Read News
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+        
+        function resize() { 
+            width = canvas.width = window.innerWidth; 
+            height = canvas.height = window.innerHeight; 
+            stars = Array.from({length: 400}, () => ({
+                x: Math.random() * width, 
+                y: Math.random() * height, 
+                size: Math.random() * 1.5, 
+                speed: Math.random() * 0.5
+            })); 
+        }
+        
+        function animate() { 
+            ctx.fillStyle = '#030008'; 
+            ctx.fillRect(0, 0, width, height); 
+            
+            ctx.fillStyle = 'white'; 
+            
+            stars.forEach(s => { 
+                s.y += s.speed; 
+                if (s.y > height) s.y = 0; 
+                
+                ctx.beginPath(); 
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); 
+                ctx.fill(); 
+            }); 
+            
+            requestAnimationFrame(animate); 
+        }
+        
+        window.onresize = resize; 
+        window.onload = function() {
+            resize(); 
+            animate();
+        };
+    </script>
+</body>
+</html>

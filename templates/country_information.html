@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Information</title>
+    <style>
+        :root {
+            --neon-pink: #ec4899;
+            --bg-color: #030008;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body { 
+            min-height: 100vh; 
+            background: var(--bg-color); 
+            color: white;
+            padding-bottom: 50px;
+        }
+
+        nav {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(236, 72, 153, 0.3);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo { font-size: 24px; font-weight: bold; color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
+        
+        .nav-links { display: flex; gap: 15px; }
+
+        .nav-btn { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+            border: 1px solid var(--neon-pink);
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .nav-btn:hover { 
+            background: var(--neon-pink);
+            color: white;
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        .container {
+            width: 90%;
+            margin: 40px auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,.5);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 64px;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #ff7eb3, 0 0 20px #ff7eb3, 0 0 40px var(--neon-pink);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 15px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        th {
+            background: var(--neon-pink); 
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        td {
+            padding: 18px;
+            color: white;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        tr:hover td {
+            background: rgba(236, 72, 153, 0.15); 
+            transition: 0.3s;
+        }
+
+        @media(max-width:768px){
+            nav { flex-direction: column; gap: 15px; }
+            h2 { font-size: 36px; } 
+            table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">🌍 GlobalData</div>
+        <div class="nav-links">
+            <a href="/" class="nav-btn">Home</a>
+            <a href="about.html" class="nav-btn">About Me</a>
+            <button onclick="location.reload()" class="nav-btn">Refresh</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Countries and Cities</h2>
+
+        <table>
+            <tr>
+                <th>S.No</th>
+                <th>Country</th>
+                <th>ISO2</th>
+                <th>ISO3</th>
+                <th>Cities</th>
+            </tr>
+            {% for country in countries %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ country.country }}</td>
+                <td>{{ country.iso2 }}</td>
+                <td>{{ country.iso3 }}</td>
+                <td>{{ country.cities | join(", ") }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+</html>

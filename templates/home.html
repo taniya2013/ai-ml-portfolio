@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Workspace - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #030008; color: white; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        canvas { display: block; position: absolute; top: 0; left: 0; z-index: -1; }
+        
+        .pink-gradient-text { background: linear-gradient(90deg, #ff7eb3 0%, #ff1493 50%, #ff758c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 20px rgba(255, 20, 147, 0.3); animation: pulse-pink 3s infinite alternate; transition: all 0.3s ease; }
+        .pink-gradient-text:hover { text-shadow: 0 0 30px rgba(255, 20, 147, 0.8); }
+        @keyframes pulse-pink { 0% { filter: hue-rotate(-10deg) brightness(1); } 100% { filter: hue-rotate(10deg) brightness(1.2); } }
+
+        .glow-button { position: relative; background: rgba(255, 20, 147, 0.05); border: 2px solid #ff7eb3; color: #ff7eb3; box-shadow: 0 0 10px #ff7eb3, inset 0 0 5px #ff7eb3; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 2px; backdrop-filter: blur(5px); cursor: pointer; }
+        .glow-button:hover { background: #ff7eb3; color: #fff; box-shadow: 0 0 20px #ff7eb3, 0 0 40px #ff1493, inset 0 0 15px #ff7eb3; transform: translateY(-2px); }
+        
+        .nav-container { position: absolute; top: 20px; right: 20px; display: flex; gap: 15px; z-index: 10; }
+        
+        .skill-badge { padding: 8px 18px; border-radius: 30px; background: rgba(255, 20, 147, 0.1); border: 1px solid rgba(255, 126, 179, 0.3); color: #ffb3c6; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; backdrop-filter: blur(4px); transition: all 0.3s ease; cursor: default; }
+        .skill-badge:hover { background: rgba(255, 20, 147, 0.3); border-color: #ff7eb3; box-shadow: 0 0 15px rgba(255, 20, 147, 0.5); transform: scale(1.05); color: white; }
+        
+        @media (max-width: 768px) { .nav-container { top: 15px; right: 15px; gap: 8px; flex-wrap: wrap; justify-content: flex-end; } }
+    </style>
+</head>
+<body>
+    <canvas id="galaxyCanvas"></canvas>
+
+    <nav class="nav-container">
+        <button class="glow-button px-5 py-2 rounded-lg font-bold text-xs md:text-sm" onclick="navWithSound('/')">Home</button>
+        <button class="glow-button px-5 py-2 rounded-lg font-bold text-xs md:text-sm" onclick="navWithSound('/about')">About Me</button>
+        <button class="glow-button px-5 py-2 rounded-lg font-bold text-xs md:text-sm" onclick="navWithSound('/blog')">Blogs</button>
+        <button class="glow-button px-5 py-2 rounded-lg font-bold text-xs md:text-sm" onclick="navWithSound('/internship')">Experience</button>
+    </nav>
+
+    <main class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full px-4 z-10">
+        <h1 class="text-4xl md:text-7xl font-extrabold mb-4 pink-gradient-text tracking-wider uppercase">AI & ML Student</h1>
+        <div class="flex flex-wrap justify-center gap-3 mb-10 max-w-2xl mx-auto">
+            <span class="skill-badge">Python</span>
+            <span class="skill-badge">Machine Learning</span>
+            <span class="skill-badge">HTML5</span>
+            <span class="skill-badge">CSS3</span>
+            <span class="skill-badge">JavaScript</span>
+            <span class="skill-badge">Data Science</span>
+            <span class="skill-badge">C++</span>
+        </div>
+        <button class="glow-button px-10 py-5 rounded-full font-black text-xl md:text-2xl hover:scale-105 transition-transform inline-block" onclick="activateAI(this)">activate ai</button>
+    </main>
+
+    <footer class="absolute bottom-4 w-full text-center z-10 text-xs md:text-sm tracking-widest text-[#ffb3c6] opacity-75 uppercase">
+        Taniya | Summer Training @ CodroidHub
+    </footer>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playBeep() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function navWithSound(url) {
+            playBeep();
+            setTimeout(() => { window.location.href = url; }, 200);
+        }
+
+        function activateAI(button) {
+            playBeep();
+            button.innerText = "INITIALIZING...";
+            setTimeout(() => { window.location.href = '/internship'; }, 1000);
+        }
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) - 0.5;
+            mouseY = (e.clientY / window.innerHeight) - 0.5;
+        });
+
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+        function resize() { 
+            width = canvas.width = window.innerWidth; 
+            height = canvas.height = window.innerHeight; 
+            stars = Array.from({length: 400}, () => ({
+                x: Math.random() * width, 
+                y: Math.random() * height, 
+                radius: Math.random() * 1.5, 
+                vx: (Math.random() - 0.5) * 0.2,
+                vy: (Math.random() - 0.5) * 0.2
+            })); 
+        }
+        function animate() { 
+            ctx.fillStyle = '#030008'; 
+            ctx.fillRect(0, 0, width, height); 
+            ctx.fillStyle = 'white'; 
+            stars.forEach(s => { 
+                s.x += s.vx + (mouseX * 2); 
+                s.y += s.vy + (mouseY * 2);
+                if(s.x < 0) s.x = width; if(s.x > width) s.x = 0;
+                if(s.y < 0) s.y = height; if(s.y > height) s.y = 0;
+                ctx.beginPath(); 
+                ctx.arc(s.x, s.y, s.radius, 0, Math.PI*2); 
+                ctx.fill(); 
+            }); 
+            requestAnimationFrame(animate); 
+        }
+        window.onresize = resize; 
+        resize(); 
+        animate();
+    </script>
+</body>
+</html>

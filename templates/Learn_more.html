@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn More | Taniya</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:linear-gradient(135deg,#0B1120,#111827,#1E1B4B);
+            color:#F8FAFC;
+        }
+
+        /* NAVBAR */
+        header{
+            background:rgba(124,58,237,.15);
+            backdrop-filter:blur(12px);
+            padding:18px 8%;
+            border-bottom:1px solid rgba(255,255,255,.08);
+            position:sticky;
+            top:0;
+        }
+
+        nav{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logo{
+            color:#A855F7;
+            font-size:28px;
+            font-weight:700;
+        }
+
+        nav ul{
+            display:flex;
+            list-style:none;
+        }
+
+        nav ul li{
+            margin-left:25px;
+        }
+
+        nav ul li a{
+            color:white;
+            text-decoration:none;
+            font-size:16px;
+            transition:.3s;
+        }
+
+        nav ul li a:hover{
+            color:#A855F7;
+        }
+
+        /* CONTAINER */
+        .container{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:25px;
+            padding:60px 8%;
+        }
+
+        /* CARD */
+        .card{
+            background:rgba(30,41,59,.75);
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:18px;
+            padding:25px;
+            backdrop-filter:blur(10px);
+            transition:.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-8px);
+            box-shadow:0 15px 30px rgba(168,85,247,.25);
+            border-color:#8B5CF6;
+        }
+
+        .card h2{
+            color:#A855F7;
+            margin-bottom:15px;
+        }
+
+        .card p{
+            color:#CBD5E1;
+            line-height:1.7;
+            margin-bottom:15px;
+        }
+
+        .card ul{
+            padding-left:20px;
+            margin-bottom:15px;
+        }
+
+        .card li{
+            margin-bottom:8px;
+            color:#CBD5E1;
+        }
+
+        /* BUTTON */
+        button{
+            background:linear-gradient(45deg,#8B5CF6,#A855F7);
+            color:white;
+            border:none;
+            padding:12px 25px;
+            border-radius:10px;
+            cursor:pointer;
+            font-weight:600;
+            transition:.3s;
+        }
+
+        button:hover{
+            transform:translateY(-4px);
+            box-shadow:0 10px 20px rgba(168,85,247,.3);
+        }
+
+        a{
+            text-decoration:none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <h2 class="logo">Taniya</h2>
+
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+           
+        </ul>
+    </nav>
+</header>
+
+<section class="container">
+
+    <div class="card">
+        <h2>💻 Minor Projects</h2>
+        <p>I have worked on several minor projects to strengthen my programming and web development skills.</p>
+
+        <ul>
+            <li>🎬 Movie Search App</li>
+            <li>🌐 Personal Portfolio Website</li>
+            <li>📝 Flask Mini Applications</li>
+        </ul>
+
+        <a href="/portfolio">
+            <button>View Projects</button>
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>🚀 Major Projects</h2>
+        <p>Major projects demonstrate my practical knowledge in AI, ML and Full Stack Development.</p>
+
+        <ul>
+            <li>🤖 AI Based Project (Upcoming)</li>
+            <li>📊 Machine Learning Project</li>
+            <li>🧠 Intelligent Web Application</li>
+        </ul>
+
+        <a href="/portfolio">
+            <button>Explore</button>
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>🕸️ Web Scraping</h2>
+        <p>I have experience in collecting and analyzing web data using Python.</p>
+
+        <ul>
+            <li>🛒 Amazon Product Scraper</li>
+            <li>📰 News Data Scraper</li>
+            <li>🎥 Movie Information Scraper</li>
+        </ul>
+
+        <a href="/scrapping">
+            <button>View</button>
+        </a>
+    </div>
+    <div class="card">
+    <h2>📊 Power BI Dashboards</h2>
+
+    <p>I have created interactive Power BI dashboards for data analysis and visualization.</p>
+
+    <ul>
+        <li>🎓 University Dashboard</li>
+        <li>📈 Sales Dashboard</li>
+        <li>👨‍💼 HR Dashboard</li>
+    </ul>
+
+    <a href="/powerbi">
+        <button>View Dashboards</button>
+    </a>
+</div>
+
+</section>
+
+</body>
+
+</html>

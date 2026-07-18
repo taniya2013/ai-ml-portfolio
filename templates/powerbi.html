@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Dashboards | Taniya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --neon-pink: #ec4899; --bg-color: #030008; }
+        body { margin: 0; background-color: var(--bg-color); color: white; font-family: 'Poppins', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        #starCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        #main-container { position: relative; z-index: 1; transition: transform 0.1s ease-out; }
+        nav { padding: 20px 40px; display: flex; justify-content: flex-end; gap: 15px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .nav-btn { color: white; text-decoration: none; font-weight: 500; padding: 10px 20px; border-radius: 8px; transition: 0.3s; border: 1px solid var(--neon-pink); background: transparent; cursor: pointer; }
+        .nav-btn:hover { background: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+        .pink-glow { text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink); color: white; }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 20px; transition: 0.4s; padding: 2rem; }
+        .glass-panel:hover { border-color: var(--neon-pink); box-shadow: 0 0 20px rgba(236, 72, 153, 0.3); transform: translateY(-10px); }
+    </style>
+</head>
+<body>
+    <canvas id="starCanvas"></canvas>
+    <div id="main-container">
+        <nav>
+            <button class="nav-btn" onclick="navWithSound('/')">Home</button>
+            <button class="nav-btn" onclick="navWithSound('/about')">About Me</button>
+            <button class="nav-btn" onclick="navWithSound('/blog')">Blogs</button>
+            <button class="nav-btn" onclick="navWithSound('/internship')">Experience</button>
+        </nav>
+
+        <main class="p-6 max-w-6xl mx-auto space-y-12">
+            <section class="text-center py-10">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 pink-glow">Power BI Dashboards</h1>
+                <p class="text-gray-400 text-lg">Data visualization and insights.</p>
+            </section>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- University Dashboard Card -->
+                <div class="glass-panel space-y-4">
+                    <h2 class="text-xl font-bold">🎓 University Dashboard</h2>
+                    <p class="text-gray-300 text-sm">Student performance analysis using Power BI with KPIs and interactive filters.</p>
+                    <button onclick="navWithSound('/university')" class="w-full mt-4 nav-btn">
+    View Dashboard
+</button>
+                </div>
+                
+                <!-- Sales Dashboard Card -->
+                <div class="glass-panel space-y-4">
+                    <h2 class="text-xl font-bold">📈 Sales Dashboard</h2>
+                    <p class="text-gray-300 text-sm">Sales and profit analysis with monthly trends and regional performance.</p>
+                   <button onclick="navWithSound('/sales')" class="w-full mt-4 nav-btn">
+    View Dashboard
+</button>
+                </div>
+                
+                <!-- HR Dashboard Card -->
+                <div class="glass-panel space-y-4">
+                    <h2 class="text-xl font-bold">👨‍💼 HR Dashboard</h2>
+                    <p class="text-gray-300 text-sm">Employee analytics dashboard showing workforce insights and performance metrics.</p>
+                   <button onclick="navWithSound('/hr')" class="w-full mt-4 nav-btn">
+    View Dashboard
+</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playBeep() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+        function navWithSound(url) {
+            playBeep();
+            setTimeout(() => window.location.href = url, 200);
+        }
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('main-container');
+        let stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
+        function createStars() {
+            stars = [];
+            for(let i=0; i<150; i++) {
+                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: Math.random() * 0.5 });
+            }
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            stars.forEach(star => {
+                star.y -= star.speed;
+                if(star.y < 0) star.y = canvas.height;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            container.style.transform = `translate(${x}px, ${y}px)`;
+        });
+        createStars();
+        animate();
+    </script>
+</body>
+</html>

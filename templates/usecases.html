@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Machine Learning Use Cases</title>
+    <style>
+        :root {
+            --neon-pink: #ec4899;
+            --bg-color: #030008;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body { 
+            min-height: 100vh; 
+            background: var(--bg-color); 
+            color: white;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+
+        #starCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        nav {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(236, 72, 153, 0.3);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo { font-size: 24px; font-weight: bold; color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
+        
+        .nav-links { display: flex; gap: 15px; }
+
+        .nav-btn { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+            border: 1px solid var(--neon-pink);
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover { 
+            background: var(--neon-pink);
+            color: white;
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        .container {
+            width: 80%;
+            margin: 60px auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #ff7eb3, 0 0 20px #ff7eb3, 0 0 40px var(--neon-pink);
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 18px;
+            margin-bottom: 50px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .file-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .file-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+        }
+
+        .file-card h3 { font-size: 20px; margin-bottom: 10px; }
+
+        .file-card a {
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--neon-pink);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .file-card a:hover {
+            background: var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        @media(max-width:768px){
+            nav { flex-direction: column; gap: 15px; }
+            h1 { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="starCanvas"></canvas>
+
+    <nav>
+        <div class="nav-logo">AI Projects</div>
+        <div class="nav-links">
+            <a href="/" class="nav-btn" onclick="playBeep()">Home</a>
+            <a href="about.html" class="nav-btn" onclick="playBeep()">About Me</a>
+       
+            <button onclick="playBeep(); location.reload()" class="nav-btn">Refresh</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>AI & Machine Learning Use Cases</h1>
+        <p class="subtitle">Explore real-world AI and Machine Learning solutions developed for various domains.</p>
+
+        <div class="cards-grid">
+            <div class="file-card">
+                <h3>AI Transcription System</h3>
+                <a href="{{ url_for('static', filename='usecases/AI Transcription System.pdf') }}" target="_blank" onclick="playBeep()">Open PDF</a>
+            </div>
+
+            <div class="file-card">
+                <h3>Smart Complaint Prioritization System</h3>
+                <a href="{{ url_for('static', filename='usecases/Smart Complaint Prioritization System.pdf') }}" target="_blank" onclick="playBeep()">Open PDF</a>
+            </div>
+
+            <div class="file-card">
+                <h3>Student dropout system</h3>
+                <a href="{{ url_for('static', filename='usecases/Student dropout system.pdf') }}" target="_blank" onclick="playBeep()">Open PDF</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        function createStars() {
+            stars = [];
+            for(let i=0; i<150; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            stars.forEach(star => {
+                star.y -= star.speed;
+                if(star.y < 0) star.y = canvas.height;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        createStars();
+        animate();
+    </script>
+</body>
+</html>

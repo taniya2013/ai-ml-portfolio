@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter | Galaxy Theme</title>
+    <!-- Tailwind CSS for modern responsive layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Poppins Font for premium typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body { 
+            background-color: #030008; 
+            color: #F8FAFC; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            position: relative;
+        }
+        
+        /* Fixed Background Canvas for Galaxy Stars */
+        canvas { 
+            display: block; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            z-index: -1; 
+            pointer-events: none;
+        }
+
+        /* Beautiful Pink Neon Text Gradient */
+        .pink-gradient-text { 
+            background: linear-gradient(90deg, #ff7eb3 0%, #ff1493 50%, #ff758c 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        /* Sticky Transparent Navbar with Blur Effect */
+        .nav-container { 
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 15px; 
+            padding: 20px 8%; 
+            z-index: 20; 
+            position: sticky; 
+            top: 0; 
+            background: rgba(3, 0, 8, 0.6); 
+            backdrop-filter: blur(12px); 
+            border-bottom: 1px solid rgba(255, 126, 179, 0.1);
+        }
+        
+        /* Sleek Glowing Buttons */
+        .glow-button { 
+            background: rgba(255, 20, 147, 0.05); 
+            border: 2px solid #ff7eb3; 
+            color: #ff7eb3; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: pointer; 
+            padding: 10px 24px; 
+            border-radius: 30px; 
+            font-weight: 600; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .glow-button:hover { 
+            background: #ff7eb3; 
+            color: #fff; 
+            box-shadow: 0 0 20px rgba(255, 126, 179, 0.7); 
+            transform: translateY(-2px); 
+        }
+
+        /* Input Elements with Subtle Glassmorphism and Focus Glow */
+        input, select {
+            background: rgba(20, 5, 25, 0.6) !important;
+            border: 1.5px solid rgba(255, 126, 179, 0.3) !important;
+            color: #fff !important;
+            transition: all 0.3s ease !important;
+        }
+
+        input:focus, select:focus {
+            outline: none !important;
+            border-color: #ff1493 !important;
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.5) !important;
+        }
+
+        /* Premium Glassmorphism Container for Table */
+        .table-container { 
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 20px;
+            background: rgba(20, 5, 25, 0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 126, 179, 0.25); 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            overflow: hidden; 
+        }
+        
+        th, td { 
+            padding: 18px 24px; 
+            border-bottom: 1px solid rgba(255, 126, 179, 0.1); 
+            text-align: center;
+        }
+
+        th { 
+            background: rgba(255, 20, 147, 0.15); 
+            color: #ff7eb3; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            font-weight: 700;
+        }
+
+        td {
+            color: #f8fafc;
+            font-size: 15px;
+        }
+        
+        tr:hover td { 
+            background: rgba(255, 20, 147, 0.08); 
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        option {
+            background-color: #0d0414;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Stars Canvas -->
+    <canvas id="galaxyCanvas"></canvas>
+
+    <!-- Header Navigation -->
+    <nav class="nav-container">
+        <button class="glow-button" onclick="window.location.href='/'">Home</button>
+        <button class="glow-button" onclick="window.location.reload()">Refresh</button>
+    </nav>
+
+    <!-- Main Content Panel -->
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        <h1 class="text-4xl md:text-5xl font-extrabold mt-2 mb-10 text-center pink-gradient-text tracking-wide drop-shadow-[0_0_15px_rgba(255,20,147,0.3)]">
+            💱 Currency Converter
+        </h1>
+
+        <!-- Conversion Form Card -->
+        <div class="bg-[rgba(20,5,25,0.4)] backdrop-blur-md border border-[rgba(255,126,179,0.15)] rounded-2xl p-6 md:p-8 mb-10 shadow-2xl">
+            <form method="POST" class="flex flex-col md:flex-row items-center justify-center gap-5">
+                <input type="number" name="amount" placeholder="Enter Amount" required step="any"
+                    class="w-full md:flex-1 px-5 py-3 rounded-full text-base">
+
+                <div class="flex items-center gap-3 w-full md:w-auto justify-between">
+                    <select name="from_currency" class="w-[45%] md:w-32 px-4 py-3 rounded-full text-base cursor-pointer">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="INR">INR</option>
+                        <option value="JPY">JPY</option>
+                    </select>
+
+                    <span class="text-pink-500 font-extrabold text-2xl animate-pulse">➡️</span>
+
+                    <select name="to_currency" class="w-[45%] md:w-32 px-4 py-3 rounded-full text-base cursor-pointer">
+                        <option value="INR">INR</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="JPY">JPY</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="glow-button w-full md:w-auto px-10 py-3">
+                    Convert
+                </button>
+            </form>
+        </div>
+
+        <!-- Live Server Render Section -->
+        <div id="jinja-container">
+            {% if data %}
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Amount</th>
+                            <th>Exchange Rate</th>
+                            <th>Converted Amount</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-bold text-pink-400">{{ data["From Currency"] }}</td>
+                            <td class="font-bold text-pink-400">{{ data["To Currency"] }}</td>
+                            <td>{{ data["Amount"] }}</td>
+                            <td class="text-pink-300 font-semibold">{{ data["Exchange Rate"] }}</td>
+                            <td class="font-bold text-emerald-400 text-lg">{{ data["Converted Amount"] }}</td>
+                            <td class="text-gray-400 text-sm">{{ data["Last Updated"] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Offline/Static Environment Mockup Container (Won't show in Flask production with data) -->
+        <div id="preview-container" class="hidden">
+            <!-- Filled dynamically by JavaScript in Static Preview mode -->
+        </div>
+    </main>
+
+    <script>
+        // --- STREAMING_CHUNK: Coding the galaxy canvas starfield... ---
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+        let mouseX = 0, mouseY = 0;
+        
+        // Setup Stars and Resize Window
+        function resize() { 
+            width = canvas.width = window.innerWidth; 
+            height = canvas.height = window.innerHeight; 
+            stars = Array.from({length: 250}, () => ({
+                x: Math.random() * width, 
+                y: Math.random() * height, 
+                size: Math.random() * 1.6 + 0.2, 
+                speed: Math.random() * 0.35 + 0.1,
+                drift: Math.random() * 0.2 - 0.1
+            })); 
+        }
+        
+        // Starfield Physics Animation Loop
+        function animate() { 
+            ctx.fillStyle = '#030008'; 
+            ctx.fillRect(0, 0, width, height); 
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.85)'; 
+            
+            stars.forEach(s => { 
+                s.y += s.speed; 
+                s.x += s.drift;
+                
+                // Mouse Drift Interaction (Gravity influence)
+                let dx = mouseX - s.x;
+                let dy = mouseY - s.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 180) {
+                    s.x += (dx / dist) * 0.4;
+                    s.y += (dy / dist) * 0.4;
+                }
+                
+                // Screen boundary wrap around
+                if (s.y > height) { s.y = 0; s.x = Math.random() * width; }
+                if (s.x > width) s.x = 0;
+                if (s.x < 0) s.x = width;
+                
+                ctx.beginPath(); 
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); 
+                ctx.fill(); 
+            }); 
+            
+            requestAnimationFrame(animate); 
+        }
+
+        // Track cursor position
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        window.onresize = resize; 
+        
+        // --- STREAMING_CHUNK: Initializing state and preview mode logic... ---
+        window.onload = function() {
+            resize(); 
+            animate();
+
+            // Smart Jinja Detection for Browser Previews
+            const jinjaContainer = document.getElementById('jinja-container');
+            const previewContainer = document.getElementById('preview-container');
+
+            // Splitting curly braces inside safe string concatenation to avoid Flask compile issues
+            const checkBrackets1 = '{' + '%';
+            const checkBrackets2 = '{' + '{';
+
+            if (jinjaContainer.innerHTML.includes(checkBrackets1) || jinjaContainer.innerHTML.includes(checkBrackets2)) {
+                jinjaContainer.style.display = 'none'; // Hide raw backend syntax
+                previewContainer.classList.remove('hidden'); // Show responsive static table
+                
+                previewContainer.innerHTML = `
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Amount</th>
+                                    <th>Exchange Rate</th>
+                                    <th>Converted Amount</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-bold text-pink-400">USD</td>
+                                    <td class="font-bold text-pink-400">INR</td>
+                                    <td>100</td>
+                                    <td class="text-pink-300 font-semibold">83.45</td>
+                                    <td class="font-bold text-emerald-400 text-lg">8,345.00 INR</td>
+                                    <td class="text-gray-400 text-sm">Just Now (Static Preview)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+        };
+    </script>
+</body>
+</html>

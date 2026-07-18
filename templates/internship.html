@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Journey | Taniya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; background-color: #030008; color: white; font-family: 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; }
+        
+        .pink-gradient-text { background: linear-gradient(90deg, #ff7eb3 0%, #ff1493 50%, #ff758c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .nav-container { display: flex; justify-content: flex-end; gap: 10px; padding: 20px; z-index: 20; position: sticky; top: 0; }
+        
+        .glow-button { background: rgba(255, 20, 147, 0.05); border: 2px solid #ff7eb3; color: #ff7eb3; transition: all 0.3s ease; cursor: pointer; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-transform: uppercase; }
+        .glow-button:hover { background: #ff7eb3; color: #fff; box-shadow: 0 0 15px #ff7eb3; transform: translateY(-2px); }
+        
+        .glass-panel { 
+            background: rgba(20, 5, 25, 0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 126, 179, 0.2);
+            transition: all 0.4s ease;
+        }
+        .glass-panel:hover {
+            border-color: #ff7eb3;
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .week-card { opacity: 0; animation: fadeIn 0.8s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+    <canvas id="galaxyCanvas"></canvas>
+
+    <nav class="nav-container">
+        <button class="glow-button" onclick="navWithSound('/')">Home</button>
+        <button class="glow-button" onclick="navWithSound('/about.html')">About Me</button>
+    </nav>
+
+    <main class="p-6 max-w-6xl mx-auto space-y-20">
+        <section class="min-h-[60vh] flex flex-col justify-center items-center text-center">
+            <h1 class="text-6xl md:text-8xl font-extrabold mb-6 pink-gradient-text">My Internship Journey</h1>
+            <p class="text-xl text-gray-300 mb-10 max-w-2xl">6 Weeks AI & ML Internship at CodroidHub Pvt. Ltd.</p>
+            <a href="#motivation" class="glow-button text-lg px-10 py-4" onclick="playBeep()">Start Journey</a>
+        </section>
+
+        <section id="motivation" class="glass-panel p-10 rounded-3xl">
+            <h2 class="text-4xl font-bold text-pink-400 mb-6">💡 My Motivation</h2>
+            <div class="text-gray-300 leading-relaxed space-y-4">
+                <p>As an Artificial Intelligence & Machine Learning student, I have always believed that learning extends beyond the classroom. While academic studies provided me with a strong theoretical foundation, I wanted to gain practical experience by working on real-world projects and understanding how technology solves real-life problems.</p>
+                <p>This motivation encouraged me to join the <strong>6 Weeks AI & ML Internship at CodroidHub Pvt. Ltd.</strong>, where I had the opportunity to enhance my technical skills and work on practical applications. During this journey, I worked on Python programming, Machine Learning models, Flask web development, Web Scraping, API integration, and Data Analysis. Every project strengthened my problem-solving skills and boosted my confidence in applying theoretical concepts to real-world scenarios.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-4xl font-bold text-white mb-12 text-center pink-gradient-text">Weekly Learning Journey</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="weeksGrid"></div>
+        </section>
+
+        <section class="pb-20">
+            <h2 class="text-4xl font-bold text-white mb-12 text-center pink-gradient-text">Featured Projects</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-panel p-6 rounded-3xl text-center flex flex-col justify-between">
+                    <h3 class="text-lg font-bold text-white mb-4">Web Scraping</h3>
+                    <button onclick="navWithSound('/scrapping')" class="glow-button w-full text-sm">View Details</button>
+                </div>
+                <div class="glass-panel p-6 rounded-3xl text-center flex flex-col justify-between">
+                    <h3 class="text-lg font-bold text-white mb-4">AI/ML Use Cases</h3>
+                    <button onclick="navWithSound('/usecases')" class="glow-button w-full text-sm">View Details</button>
+                </div>
+                <div class="glass-panel p-6 rounded-3xl text-center flex flex-col justify-between">
+                    <h3 class="text-lg font-bold text-white mb-4">Assignments</h3>
+                    <button onclick="navWithSound('/assignments')" class="glow-button w-full text-sm">View Details</button>
+                </div>
+                <div class="glass-panel p-6 rounded-3xl text-center flex flex-col justify-between">
+                    <h3 class="text-lg font-bold text-white mb-4">Capstone</h3>
+                   <button onclick="navWithSound('/capstone')" class="glow-button w-full text-sm">
+    View Details
+</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playBeep() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function navWithSound(url) {
+            playBeep();
+            setTimeout(() => { window.location.href = url; }, 200);
+        }
+
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; stars = Array.from({length: 400}, () => ({x: Math.random() * width, y: Math.random() * height, size: Math.random() * 1.5, speed: Math.random() * 0.5})); }
+        function animate() { ctx.fillStyle = '#030008'; ctx.fillRect(0, 0, width, height); ctx.fillStyle = 'white'; stars.forEach(s => { s.y += s.speed; if (s.y > height) s.y = 0; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); }); requestAnimationFrame(animate); }
+        window.onresize = resize; resize(); animate();
+
+        const weeks = [
+            {w: "Week 1", t: "Foundation", d: "Python & GitHub workflow."},
+            {w: "Week 2", t: "Flask Dev", d: "Backend-Frontend integration."},
+            {w: "Week 3", t: "Web Scraping", d: "Data extraction projects."},
+            {w: "Week 4", t: "APIs", d: "REST API & JSON handling."},
+            {w: "Week 5", t: "ML Analysis", d: "Preprocessing & modeling."},
+            {w: "Week 6", t: "Capstone", d: "Final project deployment."}
+        ];
+        const grid = document.getElementById('weeksGrid');
+        weeks.forEach((week, i) => {
+            const div = document.createElement('div');
+            div.className = 'glass-panel p-6 rounded-2xl week-card';
+            div.style.animationDelay = `${i * 0.15}s`;
+            div.innerHTML = `<h3 class="text-2xl font-bold text-pink-300 mb-2">${week.w}</h3><h4 class="font-semibold text-white mb-3 text-lg">${week.t}</h4><p class="text-gray-400">${week.d}</p>`;
+            grid.appendChild(div);
+        });
+    </script>
+</body>
+</html>

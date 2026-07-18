@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website | Taniya</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio.css') }}">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <h2 class="logo">Taniya</h2>
+
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#tech">Tech Stack</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Hero -->
+<section class="about" id="overview">
+
+    <h2>🌐 Personal Portfolio Website</h2>
+
+    <p>
+        This portfolio website was designed and developed to professionally showcase my
+        skills, internship experience, projects, Power BI dashboards, and technical
+        expertise. The website is built using Flask, HTML, CSS, and Python with a
+        responsive and user-friendly interface.
+    </p>
+
+</section>
+
+<!-- Features -->
+<section class="skills" id="features">
+
+    <h2>✨ Key Features</h2>
+
+    <div class="cards">
+
+        <div class="card">Responsive Design</div>
+        <div class="card">Modern Home Page</div>
+        <div class="card">About Me Section</div>
+        <div class="card">Skills Showcase</div>
+        <div class="card">Internship Experience</div>
+        <div class="card">Featured Projects</div>
+        <div class="card">Power BI Dashboard</div>
+        <div class="card">Contact Section</div>
+
+    </div>
+
+</section>
+
+<!-- Tech Stack -->
+<section class="skills" id="tech">
+
+    <h2>🛠 Technologies Used</h2>
+
+    <div class="cards">
+
+        <div class="card">Python</div>
+        <div class="card">Flask</div>
+        <div class="card">HTML5</div>
+        <div class="card">CSS3</div>
+        <div class="card">Jinja2</div>
+        <div class="card">Git & GitHub</div>
+
+    </div>
+
+</section>
+
+<!-- Objectives -->
+<section class="projects">
+
+    <h2>🎯 Project Objectives</h2>
+
+    <div class="project">
+
+        <p>
+            • Build a professional portfolio website.<br><br>
+
+            • Showcase technical skills and real-world projects.<br><br>
+
+            • Demonstrate Flask web development and responsive UI design.<br><br>
+
+            • Create an easy-to-navigate platform for recruiters and interviewers.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- Contact -->
+<section class="about" id="contact">
+
+    <h2>📬 Connect With Me</h2>
+
+    <div class="contact-grid">
+
+        <a href="mailto:tt835554@gmail.com" class="contact-card">
+            <span>📧</span>
+            <h3>Email</h3>
+            <p>tt835554@gmail.com</p>
+        </a>
+
+        <a href="https://github.com/taniya2013" target="_blank" class="contact-card">
+            <span>💻</span>
+            <h3>GitHub</h3>
+            <p>github.com/taniya2013</p>
+        </a>
+
+        <a href="https://www.linkedin.com/in/taniya-t-6875aa338"
+           target="_blank"
+           class="contact-card">
+            <span>💼</span>
+            <h3>LinkedIn</h3>
+            <p>View My Profile</p>
+        </a>
+
+    </div>
+
+</section>
+
+<footer>
+    <p>© 2026 Taniya | Personal Portfolio Website</p>
+</footer>
+
+</body>
+</html>

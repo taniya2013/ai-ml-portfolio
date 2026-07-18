@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goodreads Quotes | Taniya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; background-color: #030008; color: white; font-family: 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; }
+        
+        .pink-gradient-text { background: linear-gradient(90deg, #ff7eb3 0%, #ff1493 50%, #ff758c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-container { display: flex; justify-content: flex-end; gap: 15px; padding: 20px; z-index: 20; position: sticky; top: 0; background: rgba(3, 0, 8, 0.5); backdrop-filter: blur(10px); }
+        .glow-button { background: rgba(255, 20, 147, 0.05); border: 2px solid #ff7eb3; color: #ff7eb3; transition: all 0.3s ease; cursor: pointer; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-transform: uppercase; }
+        .glow-button:hover { background: #ff7eb3; color: #fff; box-shadow: 0 0 15px #ff7eb3; transform: translateY(-2px); }
+        
+        .glass-table-wrapper { padding: 50px 8%; }
+        table { width: 100%; border-collapse: collapse; background: rgba(20, 5, 25, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 126, 179, 0.2); border-radius: 1.5rem; overflow: hidden; }
+        th, td { padding: 20px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: #e2e8f0; }
+        th { background: rgba(255, 20, 147, 0.2); color: #fff; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; }
+        tr:hover { background: rgba(255, 20, 147, 0.1); }
+        
+        img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ff7eb3; object-fit: cover; }
+        .author { color: #ff7eb3; font-weight: bold; }
+        .quote-text { max-width: 500px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <canvas id="galaxyCanvas"></canvas>
+
+    <nav class="nav-container">
+        <button class="glow-button" onclick="window.location.href='/'">Home</button>
+        <button class="glow-button" onclick="window.location.href='/about'">About Me</button>
+        <button class="glow-button" onclick="window.location.href='/goodreads'">Refresh</button>
+    </nav>
+
+    <main class="glass-table-wrapper">
+        <h1 class="text-5xl font-extrabold mb-10 text-center pink-gradient-text">Goodreads Quotes</h1>
+        
+        <table id="quotesTable">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Quote</th>
+                    <th>Author</th>
+                    <th>Tags</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Flask Template Injection -->
+                {% for q in quotes %}
+                <tr>
+                    <td>
+                        {% if q.image_url %}
+                            <img src="{{ q.image_url }}" alt="author">
+                        {% else %}
+                            <div class="w-16 h-16 rounded-full bg-gray-800 border border-pink-500"></div>
+                        {% endif %}
+                    </td>
+                    <td class="quote-text">{{ q.quote }}</td>
+                    <td class="author">{{ q.author }}</td>
+                    <td class="text-sm text-gray-400">{{ q.tags }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+
+    <script>
+        // Galaxy animation logic
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) - 0.5;
+            mouseY = (e.clientY / window.innerHeight) - 0.5;
+        });
+
+        function resize() { 
+            width = canvas.width = window.innerWidth; 
+            height = canvas.height = window.innerHeight; 
+            stars = Array.from({length: 400}, () => ({
+                x: Math.random() * width, 
+                y: Math.random() * height, 
+                size: Math.random() * 1.5, 
+                speed: Math.random() * 0.5
+            })); 
+        }
+
+        function animate() { 
+            ctx.fillStyle = '#030008'; 
+            ctx.fillRect(0, 0, width, height); 
+            ctx.fillStyle = 'white'; 
+            stars.forEach(s => { 
+                s.y += s.speed + (mouseY * 0.5); 
+                s.x += (mouseX * 0.5);
+                if (s.y > height) s.y = 0; 
+                if (s.x > width) s.x = 0; else if (s.x < 0) s.x = width;
+                ctx.beginPath(); 
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); 
+                ctx.fill(); 
+            }); 
+            requestAnimationFrame(animate); 
+        }
+
+        window.onresize = resize; 
+        resize(); 
+        animate();
+    </script>
+</body>
+</html>

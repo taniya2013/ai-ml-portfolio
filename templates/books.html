@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Scraper | Taniya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; background-color: #030008; color: white; font-family: 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; }
+        
+        .pink-gradient-text { background: linear-gradient(90deg, #ff7eb3 0%, #ff1493 50%, #ff758c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-container { display: flex; justify-content: flex-end; gap: 15px; padding: 20px; z-index: 20; position: sticky; top: 0; background: rgba(3, 0, 8, 0.5); backdrop-filter: blur(10px); }
+        .glow-button { background: rgba(255, 20, 147, 0.05); border: 2px solid #ff7eb3; color: #ff7eb3; transition: all 0.3s ease; cursor: pointer; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-transform: uppercase; }
+        .glow-button:hover { background: #ff7eb3; color: #fff; box-shadow: 0 0 15px #ff7eb3; transform: translateY(-2px); }
+        
+        .table-container { padding: 50px 8%; }
+        table { width: 100%; border-collapse: collapse; background: rgba(20, 5, 25, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 126, 179, 0.3); border-radius: 1.5rem; overflow: hidden; }
+        th, td { padding: 20px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: #e2e8f0; }
+        th { background: rgba(255, 20, 147, 0.2); color: #fff; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; }
+        tr:hover { background: rgba(255, 20, 147, 0.1); }
+        
+        img { width: 60px; height: 85px; object-fit: cover; border-radius: 8px; border: 2px solid #ff7eb3; }
+        .title { max-width: 400px; font-weight: 500; }
+        .price { color: #ff7eb3; font-weight: 700; }
+        .rating { color: #FACC15; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <canvas id="galaxyCanvas"></canvas>
+
+    <nav class="nav-container">
+        <button class="glow-button" onclick="window.location.href='/'">Home</button>
+        <button class="glow-button" onclick="window.location.href='/books'">Refresh</button>
+    </nav>
+
+    <main class="table-container">
+        <h1 class="text-5xl font-extrabold mb-10 text-center pink-gradient-text">Books Collection</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Rating</th>
+                    <th>Availability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in books %}
+                <tr>
+                    <td><img src="{{ b.Image }}" alt="book"></td>
+                    <td class="title">{{ b.Title }}</td>
+                    <td class="price">{{ b.Price }}</td>
+                    <td class="rating">{{ b.Rating }}</td>
+                    <td class="text-emerald-400">{{ b.Availability }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+        function resize() { 
+            width = canvas.width = window.innerWidth; 
+            height = canvas.height = window.innerHeight; 
+            stars = Array.from({length: 400}, () => ({x: Math.random() * width, y: Math.random() * height, size: Math.random() * 1.5, speed: Math.random() * 0.5})); 
+        }
+        function animate() { 
+            ctx.fillStyle = '#030008'; 
+            ctx.fillRect(0, 0, width, height); 
+            ctx.fillStyle = 'white'; 
+            stars.forEach(s => { 
+                s.y += s.speed; 
+                if (s.y > height) s.y = 0; 
+                ctx.beginPath(); 
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); 
+                ctx.fill(); 
+            }); 
+            requestAnimationFrame(animate); 
+        }
+        window.onresize = resize; 
+        resize(); 
+        animate();
+    </script>
+</body>
+</html>
